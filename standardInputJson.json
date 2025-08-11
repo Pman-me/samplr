@@ -1,0 +1,28 @@
+{
+        "language": "Solidity",
+        "sources": {
+            "contracts/TipContract.sol": {
+                "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.6;\n\ncontract TipContract {\n    event TipSent(address indexed from, address indexed to, uint256 amount);\n\n    function tip(address payable recipient) public payable {\n        require(recipient != address(0), \"Invalid recipient address\");\n        require(msg.value > 0, \"No funds sent\");\n\n        (bool success, ) = recipient.call{value: msg.value}(\"\");\n        require(success, \"Transfer failed\");\n\n        emit TipSent(msg.sender, recipient, msg.value);\n    }\n\n    // Fallback function to receive ETH\n    receive() external payable {}\n}"
+            }
+        },
+        "settings": {
+            "optimizer": {
+                "enabled": false,
+                "runs": 200
+            },
+            "outputSelection": {
+                "*": {
+                    "*": [
+                        "abi",
+                        "evm.bytecode",
+                        "evm.deployedBytecode",
+                        "evm.methodIdentifiers",
+                        "metadata"
+                    ],
+                    "": [
+                        "ast"
+                    ]
+                }
+            }
+        }
+    }
